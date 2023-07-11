@@ -85,6 +85,6 @@ ax3.set_xlabel('Angle/Pi', fontsize=fontsize_axes)
 ax3.set_title('c) Difference between angles T-T\' and N-N\'', fontsize=fontsize_title)
 
 # Save the figure to a file
-fig.savefig(output_path / 'figure_3.png')
-fig.savefig(output_path / 'figure_3.pdf')
+fig.savefig(output_path / 'fig3.png')
+fig.savefig(output_path / 'fig3.pdf')
 plt.show()
