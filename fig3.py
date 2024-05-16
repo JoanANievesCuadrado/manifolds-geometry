@@ -36,18 +36,18 @@ tumor_center = data[15:].mean(axis=0)
 
 # Calculate angles between N and N'
 n_vec = data[:15]/np.linalg.norm(data[:15], axis=1)[:, np.newaxis]
-cos_nn = n_vec.dot(n_vec[:,:, np.newaxis])
+cos_nn = n_vec @ n_vec.T
 angles_nn = np.arccos(np.squeeze(cos_nn)[np.eye(15, dtype=bool) == False])/np.pi
 
 # Calculate angles between N and T'
 t_vec = data[15:]/np.linalg.norm(data[15:], axis=1)[:, np.newaxis]
-cos_nt = n_vec.dot(t_vec[:,:, np.newaxis])
+cos_nt = n_vec @ t_vec.T
 angles_nt = np.arccos(cos_nt.flatten())/np.pi
 
 # Calculate angles between T and T' and difference with angles between N and N'
 data_t = data - tumor_center
 tt_vec = data_t[15:]/np.linalg.norm(data_t[15:], axis=1)[:, np.newaxis]
-cos_tt = tt_vec.dot(tt_vec[:,:, np.newaxis])
+cos_tt = tt_vec @ tt_vec.T
 angles_tt = np.arccos(np.squeeze(cos_tt)[np.eye(15, dtype=bool) == False])/np.pi
 diff = angles_tt - angles_nn
 
@@ -64,24 +64,24 @@ fontsize_ticks = 13
 plt.tick_params(labelsize=fontsize_ticks)
 
 # Plot the distribution of angles_nn in the first panel
-sns.histplot(angles_nn, kde=False, stat="frequency", ax=ax1)
+sns.histplot(angles_nn, kde=False, stat="count", ax=ax1)
 sns.rugplot(angles_nn, ax=ax1, height=0.06)
-ax1.set_ylabel('Frequency', fontsize=fontsize_axes)
-ax1.set_xlabel('Angle/Pi', fontsize=fontsize_axes)
+ax1.set_ylabel('Number of counts', fontsize=fontsize_axes)
+ax1.set_xlabel(r'Angle/$\pi$', fontsize=fontsize_axes)
 ax1.set_title('a) Angle between N and N\'', fontsize=fontsize_title)
 
 # Plot the distribution of angles_nt in the second panel
-sns.histplot(angles_nt, kde=False, stat="frequency", ax=ax2)
+sns.histplot(angles_nt, kde=False, stat="count", ax=ax2)
 sns.rugplot(angles_nt, ax=ax2, height=0.06)
-ax2.set_ylabel('Frequency', fontsize=fontsize_axes)
-ax2.set_xlabel('Angle/Pi', fontsize=fontsize_axes)
-ax2.set_title('b) Angle between N and T\'', fontsize=fontsize_title)
+ax2.set_ylabel('Number of counts', fontsize=fontsize_axes)
+ax2.set_xlabel(r'Angle/$\pi$', fontsize=fontsize_axes)
+ax2.set_title('b) Angle between T and N\'', fontsize=fontsize_title)
 
 # Plot the distribution of diff in the third panel
-sns.histplot(diff, kde=False, stat="frequency", ax=ax3)
+sns.histplot(diff, kde=False, stat="count", ax=ax3)
 sns.rugplot(diff, ax=ax3, height=0.06)
-ax3.set_ylabel('Frequency', fontsize=fontsize_axes)
-ax3.set_xlabel('Angle/Pi', fontsize=fontsize_axes)
+ax3.set_ylabel('Number of counts', fontsize=fontsize_axes)
+ax3.set_xlabel(r'Angle/$\pi$', fontsize=fontsize_axes)
 ax3.set_title('c) Difference between angles T-T\' and N-N\'', fontsize=fontsize_title)
 
 # Save the figure to a file
